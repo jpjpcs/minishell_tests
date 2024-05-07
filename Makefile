@@ -6,13 +6,13 @@
 #    By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/03 10:15:08 by wcorrea-          #+#    #+#              #
-#    Updated: 2024/05/04 18:40:51 by joaosilva        ###   ########.fr        #
+#    Updated: 2024/05/07 17:54:59 by joaosilva        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRC = src/main.c src/envp/envp.c  src/envp/envp_utils.c  src/envp/envp_utils2.c #\
+SRC = src/main.c src/envp/envp.c  src/envp/envp_utils.c  src/envp/envp_utils2.c src/check_args.c #\
 		src/environment.c \
 		src/input.c \
 		src/parse.c \
@@ -52,5 +52,23 @@ fclean: clean
 		${RM} ${NAME}
 
 re: fclean all
+
+leaks: readline.supp
+	valgrind --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --log-file=output.log ./minishell
+
+readline.supp:
+	echo "{" > readline.supp
+	echo "    leak readline" >> readline.supp
+	echo "    Memcheck:Leak" >> readline.supp
+	echo "    ..." >> readline.supp
+	echo "    fun:readline" >> readline.supp
+	echo "}" >> readline.supp
+	echo "{" >> readline.supp
+	echo "    leak add_history" >> readline.supp
+	echo "    Memcheck:Leak" >> readline.supp
+	echo "    ..." >> readline.supp
+	echo "    fun:add_history" >> readline.supp
+	echo "}" >> readline.supp
+
 
 .PHONY: all clean fclean re

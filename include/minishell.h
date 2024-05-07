@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:14:45 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/03 16:10:44 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/07 17:51:35 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,11 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/wait.h>
+# include <sys/types.h>
 # include <sys/stat.h>
 # include <signal.h>
+# include <fcntl.h>
+/*# include <linux/limits.h>*/
 # include <limits.h>
 # include <dirent.h>
 # include <errno.h>
@@ -31,9 +34,35 @@
 # define PROMPT_BEGIN "┎─── "
 # define PROMPT_END "\n┖─❯ "
 
-# define STOP 0
-# define MAXARGS 50
+//# define STOP 0
+//# define CONTINUE 1
+//# define RESTORE 2
+
 # define EXEC 300
+# define REDIR 301
+# define PIPE 302
+//# define AND 303
+# define HERE_DOC 304
+/*# define OR_OP 305*/
+# define APPEND 306
+# define BLOCK 307
+
+# define MAXARGS 50
+
+# define SPACES " \t\n\v\f\r"
+# define OPERATORS "|><&()"
+# define NOT_EXP "|><&();/ \t\n\v\f\r"
+# define OPANDSP "|><&(); \t\n\v\f\r"
+
+# define ERROR_TITLE "minishell: "
+# define ERROR_QUOTE "unclosed quotes"
+# define ERROR_SINTAX "syntax error"
+# define ERROR_HERE_DOC "unexpected EOF while looking for matching `"
+
+# define SIGRESTORE 1
+# define SIGHEREDOC 2
+# define SIGCHILD 3
+# define SIGIGNORE 4
 
 extern int g_exit;
 
@@ -56,6 +85,46 @@ typedef struct s_exec
 	int		type;
 	char	*argv[MAXARGS];
 }			t_exec;
+
+typedef struct s_redir
+{
+	int		type;
+	t_cmd	*cmd;
+	char	*file;
+	int		mode;
+	int		fd;
+}			t_redir;
+
+typedef struct s_here
+{
+	int		type;
+	t_cmd	*cmd;
+	char	*eof;
+	int		mode;
+	int		fdin;
+	int		fdout;
+}			t_here;
+
+/*typedef struct s_lrn
+{
+	int		type;
+	t_cmd	*left;
+	t_cmd	*right;
+}			t_lrn; */
+
+typedef struct s_pipe
+{
+	int		type;
+	t_cmd	*left;
+	t_cmd	*right;
+}			t_pipe;
+
+typedef struct s_block
+{
+	int		type;
+	t_cmd	*cmd;
+}			t_block;
+
 typedef struct s_shell
 {
     char    *line;
@@ -82,6 +151,9 @@ t_env   *env_add(t_shell *shell, char *key, char *value, int visible);
 void    envp_sort(t_shell *shell);
 void    envp_update(t_shell *shell);
 void    envp_destroy(t_env *env);
+
+int     check_args(t_shell *shell);
+void	free_exit(t_shell *shell);
 
 
 #endif

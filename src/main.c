@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:07:27 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/07 17:40:39 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/07 21:12:33 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,10 @@ int	main(int argc, char **argv, char **envp)
 	{
 		shell.line = get_prompt(&shell);
 		if (!shell.line)
-			break ;
+			break;
 		if (check_args(&shell))
 			ft_printf(("args ok, parser entra aqui\n"));
+		free(shell.line);
 	}
 	clear_history();
 	if (shell.envp)

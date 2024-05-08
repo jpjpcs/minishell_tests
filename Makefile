@@ -6,7 +6,7 @@
 #    By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/03 10:15:08 by wcorrea-          #+#    #+#              #
-#    Updated: 2024/05/07 20:48:07 by joaosilva        ###   ########.fr        #
+#    Updated: 2024/05/08 14:14:54 by joaosilva        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,9 +26,9 @@ SRC = src/main.c src/envp/envp.c  src/envp/envp_utils.c  src/envp/envp_utils2.c 
 
 OBJS = ${SRC:.c=.o}
 
-CC = cc
+CC = clang
 RM = rm -f
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 INCLUDE = -I includes
 MAKE = make -C
 LIBFT_PATH = libft
@@ -70,5 +70,7 @@ readline.supp:
 	echo "    fun:add_history" >> readline.supp
 	echo "}" >> readline.supp
 
+.SILENT:
 
 .PHONY: all clean fclean re
+

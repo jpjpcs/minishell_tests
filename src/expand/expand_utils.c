@@ -6,13 +6,17 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:40:13 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/23 13:12:53 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/23 13:47:13 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-
+// A função expand_line aloca memória para a nova linha. O comprimento 
+// será o comprimento da linha original
+// mais o comprimento até onde está o espaço menos a diferença entre 
+// 'j' e 'i' (o comprimento da parte da linha a ser substituída)
+// mais 1 para o caractere nulo de terminação.
 // Em C, a contagem de índices em um array (ou equivalente, como uma string) começa em 0. 
 // Portanto, se você tem um ponteiro para o início de um array, o primeiro elemento 
 // do array é acessado com ponteiro[0].
@@ -22,6 +26,10 @@
 // o quinto elemento de sh->line, então tmp - sh->line será 4, porque a contagem 
 // de índices começa em 0.
 
+
+
+/*
+//Código do Balsa
 // Esta função expande a linha inserindo uma chave entre os índices 'i' e 'j'.
 int	expand_line(char *key, int i, int j, char **line)
 {
@@ -41,6 +49,7 @@ int	expand_line(char *key, int i, int j, char **line)
 	free(tmp2); // Libera a memória da parte da linha após o índice 'j'.
 	return (1); // Retorna 1 para indicar sucesso na expansão da linha.
 }
+*/
 
 /* int	expand_free(char *key, int i, int j, char **line)
 {
@@ -49,9 +58,7 @@ int	expand_line(char *key, int i, int j, char **line)
 	return (1);
 } */
 
-// Aloca memória para a nova linha. O comprimento será o comprimento da linha original
-// mais o comprimento até onde está o espaço menos a diferença entre 'j' e 'i' (o comprimento da parte da linha a ser substituída)
-// mais 1 para o caractere nulo de terminação.
+
 int	expand_line(char *space, int i, int j, char **line)
 {
     char	*new_line; // Ponteiro para a nova linha.

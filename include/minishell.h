@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:14:45 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/07 17:51:35 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/23 02:30:43 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,16 @@
 # define HERE_DOC 304
 /*# define OR_OP 305*/
 # define APPEND 306
-# define BLOCK 307
+//# define BLOCK 307
 
 # define MAXARGS 50
 
 # define SPACES " \t\n\v\f\r"
-# define OPERATORS "|><&()"
-# define NOT_EXP "|><&();/ \t\n\v\f\r"
-# define OPANDSP "|><&(); \t\n\v\f\r"
+# define OPERATORS "|><"
+# define NOT_EXP "|></ \t\n\v\f\r"
+# define OPANDSP "|>< \t\n\v\f\r"
 
-# define ERROR_TITLE "minishell: "
+# define ERROR_TITLE "-minishell: "
 # define ERROR_QUOTE "unclosed quotes"
 # define ERROR_SINTAX "syntax error"
 # define ERROR_HERE_DOC "unexpected EOF while looking for matching `"
@@ -66,19 +66,36 @@
 
 extern int g_exit;
 
+typedef struct s_cmd
+{
+   int  type;
+}   t_cmd;
+
 typedef struct s_env
 {
     char            *key;
     char            *value;
     int                     visible;
-    int                     index;
+    //int                     index;
     struct s_env    *next;
 }                           t_env;
 
-typedef struct s_cmd
+typedef struct s_shell
 {
-   int  type;
-}   t_cmd;
+    char    *line;
+    char    *prompt;
+    char    *ps;
+    char    *es;
+    int         line_len;
+    t_env   *env_list;
+	t_env   *env_list_sorted;
+    t_cmd   *cmd;
+    int     status;
+    int     exec_cmd;
+    int     envp_size;
+    int     pid;
+    char    **envp_char;
+} t_shell;
 
 typedef struct s_exec
 {
@@ -119,27 +136,13 @@ typedef struct s_pipe
 	t_cmd	*right;
 }			t_pipe;
 
-typedef struct s_block
+/* typedef struct s_block
 {
 	int		type;
 	t_cmd	*cmd;
-}			t_block;
+}			t_block; */
 
-typedef struct s_shell
-{
-    char    *line;
-    char    *prompt;
-    char    *ps;
-    char    *es;
-    int         line_len;
-    t_env   *env;
-    t_cmd   *cmd;
-    int     status;
-    int     exec_cmd;
-    int     envp_size;
-    int     pid;
-    char    **envp;
-} t_shell;
+
 
 void run_cmd(t_shell *shell, t_cmd *cmd);
 int run_builtin(t_shell* shell, t_exec *cmd );
@@ -150,10 +153,25 @@ void    envp_to_list(char **envp, t_shell *shell);
 t_env   *env_add(t_shell *shell, char *key, char *value, int visible);
 void    envp_sort(t_shell *shell);
 void    envp_update(t_shell *shell);
-void    envp_destroy(t_env *env);
+//void    envp_destroy(t_env *env);
 
-int     check_args(t_shell *shell);
+int     process_line(t_shell *shell);
 void	free_exit(t_shell *shell);
 
+
+void	convert_envp(char **envp, t_shell *shell);
+void	ft_envlstclear(t_env *lst, void (*del)(void*));
+void 	convert_envp_to_char(t_shell *shell);
+t_env 	*add_node_to_envp_list(t_shell *shell, char *key, char *value, int visible);
+t_env	*envp_to_sort_list(t_shell *shell);
+char	*env_get_value(char *key, t_shell *shell);
+
+void 	ft_envlstdelone(t_env *lst, void (*del)(void*));
+int		expand(char *key, int i, int j, char **line);
+int		print_error_syntax(char *msg, int exit);
+int		print_error(char *msg, char *msg2, int exit);
+bool	env_mod(t_shell *shell, char *target, char *new_value);
+void	env_export(t_shell *shell, char *key, char *value, int visible);
+void	envp_print(t_shell *shell);
 
 #endif

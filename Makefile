@@ -6,13 +6,13 @@
 #    By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/03 10:15:08 by wcorrea-          #+#    #+#              #
-#    Updated: 2024/05/08 14:14:54 by joaosilva        ###   ########.fr        #
+#    Updated: 2024/05/22 11:13:11 by joaosilva        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-SRC = src/main.c src/envp/envp.c  src/envp/envp_utils.c  src/envp/envp_utils2.c src/check_args.c #\
+SRC = src/main.c src/envp/envp1_create.c src/envp/envp2_add_rm.c src/envp/envp3_clear_modify.c src/envp/envp4_sortlist_export_get_print.c src/process_line/process_line.c src/error_frees/error_free.c src/expand/expand_utils.c  #\
 		src/environment.c \
 		src/input.c \
 		src/parse.c \
@@ -22,7 +22,7 @@ SRC = src/main.c src/envp/envp.c  src/envp/envp_utils.c  src/envp/envp_utils2.c 
 		src/commands_manager.c src/commands_execute.c src/commands_utils.c \
 		src/builtins_basic.c src/builtins_complex.c src/builtins_utils.c \
 		src/builtins_export_lists.c src/builtins_export_tmp.c \
-		src/utils.c src/utils_extra.c
+		src/utils.c src/utils_extra.c 
 
 OBJS = ${SRC:.c=.o}
 

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: luide-so <luide-so@student.42.fr>          +#+  +:+       +#+         #
+#    By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/19 15:35:28 by luide-so          #+#    #+#              #
-#    Updated: 2023/09/09 12:33:23 by luide-so         ###   ########.fr        #
+#    Updated: 2024/05/13 17:04:07 by joaosilva        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ FT_ = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \
 		ft_strnstr.c ft_strrchr.c ft_strtrim.c ft_substr.c \
 		ft_tolower.c ft_toupper.c ft_strclen.c ft_free_array.c ft_free_array_size.c \
 		ft_lstadd_back.c ft_lstadd_front.c ft_lstclear.c ft_lstdelone.c ft_lstiter.c \
-		ft_lstlast.c ft_lstmap.c ft_lstnew.c ft_lstsize.c
+		ft_lstlast.c ft_lstmap.c ft_lstnew.c ft_lstsize.c 
 FT_PRINTF = ft_intlen.c ft_itoapositive.c ft_printf.c ft_puthex_fd.c print_chr.c \
 			print_hex.c print_nbr.c print_pointer.c print_str.c print_unsigned.c
 FT_GET_NEXT_LINE = get_next_line.c

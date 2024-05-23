@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:07:27 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/07 21:12:33 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/23 13:30:17 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,15 @@ void	welcome_screen(void)
 static int	init_shell_variables(t_shell *shell, char **envp)
 {
 	*shell = (t_shell){0};
-	envp_to_list(envp, shell);
-	envp_update(shell);
+	convert_envp(envp, shell);
 	return (1);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
-
+	//sig_handler(SIGRESTORE);
+	// g_exit = 0;
 	(void)argv;
 	if (!init_shell_variables(&shell, envp))
 		return (0);
@@ -91,14 +91,22 @@ int	main(int argc, char **argv, char **envp)
 		shell.line = get_prompt(&shell);
 		if (!shell.line)
 			break;
-		if (check_args(&shell))
-			ft_printf(("args ok, parser entra aqui\n"));
+		if (process_line(&shell))
+		{
+			if (parse_line(&shell))
+			{
+				//sig_handler(SIGPIPE);
+				run_cmd(&shell, shell.cmd);
+			}
+			free_cmd(shell.cmd);
+		}
 		free(shell.line);
 	}
 	clear_history();
-	if (shell.envp)
-		ft_free_array(shell.envp);
-	if (isatty(STDIN_FILENO))
-		ft_putendl_fd("exit", 2);
+	ft_envlstclear (shell.env_list, free);
+	if (shell.envp_char) // If the shell's environment copy exists...
+		ft_free_array(shell.envp_char);  // Free the memory allocated for it.
+	if (isatty(STDIN_FILENO)) // If the shell is connected to a terminal... is running in interactive mode
+		ft_putendl_fd("exit", 2); // Print "exit" to the standard error output.
 	return (g_exit);
 }

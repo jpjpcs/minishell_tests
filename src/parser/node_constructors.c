@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   node_constructors_1.c                              :+:      :+:    :+:   */
+/*   node_constructors.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:32:08 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/04/26 11:19:53 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/22 10:50:04 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_cmd	*block_cmd(t_cmd *cmd)
+/* t_cmd	*block_cmd(t_cmd *cmd)
 {
 	t_block	*new;
 
@@ -22,7 +22,7 @@ t_cmd	*block_cmd(t_cmd *cmd)
 	new->type = BLOCK;
 	new->cmd = cmd;
 	return ((t_cmd *)new);
-}
+} */
 
 t_cmd	*redir_cmd(t_cmd *cmd, char *file, int mode, int fd)
 {

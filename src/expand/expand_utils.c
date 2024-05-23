@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:40:13 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/23 13:47:13 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/23 13:55:27 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,13 @@ int	expand_line(char *space, int i, int j, char **line)
         return (0); // Retorna 0 se a alocação de memória falhar.
 
     // Copia a parte da linha antes do índice 'i' para a nova linha.
-    ft_strncpy(new_line, *line, i);
+	ft_strlcpy(new_line, *line, i + 1);
+    
+	// Concatena o espaço à nova linha.
+	ft_strlcat(new_line, space, line_len + space_len + 1);
 
-    // Concatena a chave à nova linha.
-    ft_strcat(new_line, space);
-
-    // Concatena a parte da linha após o índice 'j' à nova linha.
-    ft_strcat(new_line, *line + j);
+	// Concatena a parte da linha após o índice 'j' à nova linha.
+	ft_strlcat(new_line, *line + j, line_len + space_len + 1);
 
     // Libera a memória da linha original.
     free(*line);

@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:40:13 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/23 13:55:27 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/24 10:46:57 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,18 @@ int	expand_line(char *space, int i, int j, char **line)
 	// Concatena a parte da linha após o índice 'j' à nova linha.
 	ft_strlcat(new_line, *line + j, line_len + space_len + 1);
 
-    // Libera a memória da linha original.
+    // Liberta a memória da linha original.
     free(*line);
 
     // Atualiza o ponteiro para a linha para apontar para a nova linha.
     *line = new_line;
 
     return (1); // Retorna 1 para indicar sucesso na expansão da linha.
+}
+
+int	expand_free(char *key, int i, int j, char **line)
+{
+	expand(key, i, j, line);
+	free(key);
+	return (1);
 }

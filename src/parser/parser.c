@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:43:25 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/23 03:35:44 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/26 09:42:32 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,10 @@ static int	gettoken_type(t_shell *shell)
 		if (*(shell->ps + 1) == '>')
 			type = APPEND;
 	}
-	/* else if (*shell->ps == '|')
-	{
-		if (*(shell->ps + 1) == '|')
-			type = OR_OP;
-	} */
 	else if (*shell->ps && !ft_strchr(OPERATORS, *shell->ps))
 		type = 'a';
 	if (*shell->ps && type != 'a')
-??????????		shell->ps += (type == HERE_DOC || type == APPEND) + 1; /// verifica se o tipo é HERE_DOC ou APPEND e incrementa ps em 1
-		//|| type == OR_OP || *shell->ps == '&') + 1;
+		shell->ps += (type == HERE_DOC || type == APPEND) + 1; /// verifica se o tipo é HERE_DOC ou APPEND e incrementa ps em 1
 	return (type);
 }
 
@@ -58,7 +52,7 @@ int	gettoken(t_shell *sh, char **token)
 
 int	peek(t_shell *shell, char *op)
 {
-	while (shell->ps < shell->es && ft_strchr(op, shell->ps) && !*shell->ps) // Enquanto ps for menor que es e encontrar um caractere em op e não for nulo.
+	while (shell->ps < shell->es && !*shell->ps) // Enquanto ps for menor que es e encontrar um caractere em op e não for nulo.
 		shell->ps++;
 	return (shell->ps && ft_strchr(op, shell->ps)); // Retorna 1 se encontrar um caractere em op, 0 caso contrário
 }
@@ -69,9 +63,7 @@ t_cmd	*parse_cmd(t_shell *shell)
     shell->es = shell->line + shell->line_len;
     shell->cmd = parsepipe(shell);
     peek(shell, "");
-	if (shell->ps != shell->es) // Se ps for diferente de es
-	{
+	if (shell->ps != shell->es && shell->status != 2) // Se ps for diferente de es e o status for diferente de 2
 		return (!print_error_syntax(shell, shell->ps, 2));
-	}
-	return shell->cmd; // Retorna o comando
+	return (shell->status == CONTINUE); // Não retorna o comando, retorna se o if do parser no main é verdadeiro ou não. se for verdadeiro retorna diferente de zero (pode ser 1, 2, etc).
 }

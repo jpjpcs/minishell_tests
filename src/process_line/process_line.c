@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:19:59 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/24 10:45:59 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/26 10:28:32 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -440,32 +440,30 @@ static int	check_syntax_errors(t_shell *shell)
 #include "../../include/minishell.h"
 
 
-static void	insert_nullchar(t_shell *sh)
+static void	insert_nullchar(t_shell *shell)
 {
     char	*tmp;
     int		quote;
 
-    quote = 0;
-    tmp = sh->line;
+    tmp = shell->line;
     while (*(++tmp))
     {
-        quote = check_unmatched_quotes(tmp); // Passa o ponteiro atual para a função
-        if (ft_strchr("OPERATORS", *tmp) && !quote) // Se o caractere for um operador e não estiver dentro de aspas
+        if (ft_strchr("OPERATORS", *tmp) && !inside_quotes(shell->line, tmp)) // Se o caractere for um operador e não estiver dentro de aspas
         {
-            if (tmp != sh->line && !ft_strchr(" |><", *(tmp - 1))) // O catater não está no início da linha e o anterior não é um espaço ou um operador
+            if (tmp != shell->line && !ft_strchr(" |><", *(tmp - 1))) // O catater não está no início da linha e o anterior não é um espaço ou um operador
             {
-                if (expand_line(" ", tmp - sh->line, tmp - sh->line, &sh->line)) // Se a expansão for bem
-                    tmp = sh->line - 1;
+                if (expand_line(" ", tmp - shell->line, tmp - shell->line, &shell->line)) // Se a expansão for bem
+                    tmp = shell->line - 1;
             }
             else if (!ft_strchr(" |><", *(tmp + 1))) // 
-                if (expand_line(" ", tmp - sh->line + 1,
-                        tmp - sh->line + 1, &sh->line))
-                    tmp = sh->line - 1;
+                if (expand_line(" ", tmp - shell->line + 1,
+                        tmp - shell->line + 1, &shell->line))
+                    tmp = shell->line - 1;
             if (ft_strchr(SPACES, *tmp) && !quote) // Se o caractere for um espaço e não estiver dentro de aspas, então incluímos o caracter nulo.
                 *tmp = '\0';
         }
     }
-    sh->line_len = ft_strlen(sh->line);
+    shell->line_len = ft_strlen(shell->line);
 }
 
 // Função para verificar se existem pipes não correspondidos
@@ -479,22 +477,22 @@ static int check_pipes(t_shell *shell)
 }
 
 // Função para alternar o status da citação e verificar se existem aspas não correspondidas
-static int check_unmatched_quotes(t_shell *shell)
+static int inside_quotes(char *line, char *current_position)
 {
     int quote = 0;
-    char *tmp;
 
-	tmp = shell->line -1;
-    while (*tmp) 
+    while (line) 
 	{
-        if (*tmp == '"' || *tmp == '\'') 
+        if (line == '"' || line == '\'') 
 		{
             if (quote == 0)
-                quote = *tmp; // Se a quote não existir é definida aqui como existente 
-            else if (quote == *tmp)
+                quote = line; // Se a quote não existir é definida aqui como existente 
+            else if (quote ==line)
                 quote = 0; // Se a quote existir é definida aqui 
         }
-        tmp++;
+		if (&line == &current_position)
+			break;
+        line++;
     }
     return quote; // Retorna o status de citação atual se nenhuma das condições acima for verdadeira
 }
@@ -502,7 +500,7 @@ static int check_unmatched_quotes(t_shell *shell)
 // Função para verificar erros de sintaxe
 static int check_syntax_errors(t_shell *shell) 
 {
-    if (!check_pipes(shell) && (!check_unmatched_quotes(shell)))
+    if (!check_pipes(shell) && (!inside_quotes(shell->line, shell->line))) // Se não houver erros de pipe e não houver citações não correspondidas
 		return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:48:05 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/24 11:18:23 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/26 11:29:11 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ static int	expand_tilde(t_shell *shell, char **line)
     tmp = *line;
     while (*tmp)
     {
-        if (*tmp == '~' && check_unmatched_quotes(shell) == 0
+        if (*tmp == '~' && !inside_quotes(shell, tmp)
             && (tmp == *line || ft_strchr(SPACES, *(tmp - 1))))
             if (point_to_exp_tilde(shell, tmp - *line, tmp, line))
                 tmp = *line;
@@ -156,7 +156,7 @@ static int	point_to_expand_env(t_shell *sh, int point, char *tmp, char **line)
 		while (len > 2 && (ft_isalnum(tmp[len]) || tmp[len] == '_'))
 			len++;
 		key = ft_substr(tmp, 1, len - 1);
-		expand(env_get(key, sh), point, point + len, line);
+		expand_line(env_get(key, sh), point, point + len, line);
 		return (free(key), 1);
 	}
 	return (0);
@@ -166,7 +166,7 @@ static void	env_expand(t_shell *shell, char *tmp, char **line)
 {
     while (*(++tmp))
     {
-        if (*tmp == '$' && !ft_strchr(NOT_EXP, *(tmp + 1)) && check_unmatched_quotes(shell) == 0
+        if (*tmp == '$' && !ft_strchr(NOT_EXP, *(tmp + 1)) && !inside_quotes(shell, tmp)
             && !((*(tmp + 1) == '"' || *(tmp + 1) == '\'')))
         {
             if (point_to_expand_env(shell, tmp - *line, tmp, line))

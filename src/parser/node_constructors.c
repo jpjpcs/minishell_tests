@@ -3,26 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   node_constructors.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
+/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 19:32:08 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/22 10:50:04 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/27 13:15:55 by jode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-/* t_cmd	*block_cmd(t_cmd *cmd)
-{
-	t_block	*new;
-
-	if (!cmd)
-		return (NULL);
-	new = (t_block *)ft_calloc(1, sizeof(t_block));
-	new->type = BLOCK;
-	new->cmd = cmd;
-	return ((t_cmd *)new);
-} */
 
 t_cmd	*redir_cmd(t_cmd *cmd, char *file, int mode, int fd)
 {
@@ -35,12 +23,12 @@ t_cmd	*redir_cmd(t_cmd *cmd, char *file, int mode, int fd)
 	redir->file = ft_strdup(file);
 	redir->mode = mode;
 	redir->fd = fd;
-	if (cmd->type == EXEC || cmd->type == BLOCK)
+	if (cmd->type == EXEC)
 		redir->cmd = cmd;
 	else
 	{
 		tmp = cmd;
-		while (tmp->type != EXEC && tmp->type != BLOCK)
+		while (tmp->type != EXEC)
 		{
 			tmp2 = tmp;
 			tmp = ((t_redir *)tmp)->cmd;

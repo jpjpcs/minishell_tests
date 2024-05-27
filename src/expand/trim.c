@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   trim.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
+/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:30:07 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/24 11:31:38 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/27 13:57:29 by jode-jes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* 
+/*
 // Código do Balsa
 
 #include "../../include/minishell.h"
 
 void	trim_arg(char *arg)
 {
-	int		squote;
-	int		dquote;
+	int	squote;
+	int	dquote;
 
 	dquote = 0;
 	squote = 0;
@@ -63,17 +63,14 @@ void	trim_quotes(char *arg, int *len)
 */
 #include "../../include/minishell.h"
 
-void trim_arg(char *arg)
+void	trim_arg(t_shell *shell, char *arg)
 {
-    int quote;
-
-    while (*arg)
-    {
-        quote = check_unmatched_quotes(arg);
-        if (ft_strchr(SPACES, *arg) && !quote)
-            *arg = '\0';
-        arg++;
-    }
+	while (*arg)
+	{
+		if (ft_strchr(SPACES, *arg) && !inside_quotes(shell->line, arg))
+			*arg = '\0';
+		arg++;
+	}
 }
 
 void	trim_quotes(char *arg, int *len)
@@ -101,4 +98,3 @@ void	trim_quotes(char *arg, int *len)
 			i++;
 	}
 }
-

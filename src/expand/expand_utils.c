@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:40:13 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 13:19:37 by jode-jes         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:12:09 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 // 'j' e 'i' (o comprimento da parte da linha a ser substituída)
 // mais 1 para o caractere nulo de terminação.
 // Em C, a contagem de índices em um array (ou equivalente,
-	como uma string) começa em 0.
+//como uma string) começa em 0.
 // Portanto, se você tem um ponteiro para o início de um array,
-	o primeiro elemento
+// o primeiro elemento
 // do array é acessado com ponteiro[0].
 // Quando você subtrai dois ponteiros que apontam para locais na
 // mesma array (como tmp - sh->line no seu código), o resultado é a diferença

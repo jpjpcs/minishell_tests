@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:26:00 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 17:34:44 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/27 18:26:40 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,11 +173,11 @@ void	convert_envp_to_linked_lists(char **envp, t_shell *shell)
 	while (envp[i])
 	{
 		key = ft_strtok(envp[i], "=");
-		if (!key)
+	/* 	if (!key)
 		{
 			perror("Error getting key envp");
 			return ;
-		}
+		} */
 		value = NULL;
 		if (key && ft_strchr(envp[i], '='))
 			value = ft_strtok(NULL, "=");

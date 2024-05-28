@@ -3,23 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:43:25 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 15:16:09 by jode-jes         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:11:35 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+// o tipo fica logo igual ao shell->ps. 
+// Logo se for > ou < fica logo definido como tal. 
+// Só append e heredoc precisam de confirmar se o 
+// tipo a seguir igual ao anterior,
+//isto é, se for > o tipo inicial,
+// se tiver outro > a seguir é pq é append. 
+// O mm raciocínio para o heredoc. 
+// Se for pipe fica só definido como pipe.
 
 static int	gettoken_type(t_shell *shell)
 {
 	int	type;
 
 	type = *shell->ps;
-		// o tipo fica logo igual ao shell->ps. Logo se for > ou < fica logo definido como tal. Só append e heredoc precisam de confirmar se o tipo a seguir igual ao anterior,
-		isto é, se for > o tipo inicial,
-		se tiver outro > a seguir é pq é append. O mm raciocínio para o heredoc. Se for pipe fica só definido como pipe.
 	if (*shell->ps == '<')
 	{
 		if (*(shell->ps + 1) == '<')
@@ -64,7 +70,6 @@ int	peek(t_shell *shell, char *op)
 	return (shell->ps && ft_strchr(op, *shell->ps));
 		// Retorna 1 se encontrar um caractere em op, 0 caso contrário
 }
-
 int	parse_cmd(t_shell *shell)
 {
 	shell->ps = shell->line;
@@ -74,7 +79,5 @@ int	parse_cmd(t_shell *shell)
 	if (shell->ps != shell->es && shell->status != 2)
 		// Se ps for diferente de es e o status for diferente de 2
 		return (!print_error_syntax(shell, shell->ps, 2));
-	return (shell->status == CONTINUE); // Não retorna o comando,
-		retorna se o if do parser no main é verdadeiro ou não. se for verdadeiro retorna diferente de zero (pode ser 1,
-		2, etc).
+	return (shell->status == CONTINUE); 
 }

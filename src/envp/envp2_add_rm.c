@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   add_rm.c                                           :+:      :+:    :+:   */
+/*   envp2_add_rm.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 02:29:21 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/16 02:30:39 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/27 17:45:30 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ bool	env_lstadd_back(t_env **lst, t_env *new)
 }
 
 // Função para criar um nó. É semelhante à ft_lstnew,
-	mas além do valor/conteúdo, tb tem o visivel,
+//mas além do valor/conteúdo, tb tem o visivel,
 t_env	*env_lstnew(char *key, char *value, int visible)
 {
 	t_env	*new;
@@ -88,7 +88,8 @@ t_env	*env_lstnew(char *key, char *value, int visible)
 }
 
 // Função semelhante à lstadd_back,
-	para adicionar um novo nó ao final da lista ligada de variáveis de ambiente.
+//	para adicionar um novo nó ao final da lista 
+// ligada de variáveis de ambiente.
 t_env	*add_node_to_envp_list(t_shell *shell, char *key, char *value,
 		int visible)
 {
@@ -101,7 +102,7 @@ t_env	*add_node_to_envp_list(t_shell *shell, char *key, char *value,
 		shell->envp_size++;
 	free(new_node);
 	envp_to_sort_list(shell);   
-		// Sort the environment variables alphabetically by key.
-	convert_envp_to_char(shell); // Update the shell's environment copy.
+		
+	convert_envp_to_char(shell); 
 	return (shell->env_list);
 }

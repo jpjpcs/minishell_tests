@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_free.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:37:39 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 15:14:14 by jode-jes         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:12:33 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	print_error(t_shell *shell, char *msg, char *msg2, int exit)
 			// Imprime uma nova linha no stderr.
 	ft_putendl_fd(msg2, STDERR_FILENO);      
 		// Imprime a segunda parte da mensagem de erro no stderr,
-		seguida de uma nova linha.
+		// seguida de uma nova linha.
 	shell->status = RESTORE;                 
 		// Define o status da shell como RESTORE.
 	g_exit = exit;                           

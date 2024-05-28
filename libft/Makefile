@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+         #
+#    By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/19 15:35:28 by luide-so          #+#    #+#              #
-#    Updated: 2024/05/13 17:04:07 by joaosilva        ###   ########.fr        #
+#    Updated: 2024/05/27 16:29:53 by crocha-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ FT_PRINTF = ft_intlen.c ft_itoapositive.c ft_printf.c ft_puthex_fd.c print_chr.c
 FT_GET_NEXT_LINE = get_next_line.c
 
 SRC = ${FT_} ${FT_PRINTF} ${FT_GET_NEXT_LINE}
-OBJS = ${addprefix ../Libft_obj/, ${SRC:.c=.o}}
+OBJS = ${addprefix , ${SRC:.c=.o}}
 HEADER = libft.h
 INCLUDE = -I .
 CC = cc
@@ -36,7 +36,7 @@ CFLAGS = -Wall -Wextra -Werror
 all: ${NAME}
 
 ${NAME}: ${OBJS} ${HEADER}
-	@ar rcs ../Libft_obj/${NAME} ${OBJS} ${HEADER}
+	@ar rcs ${NAME} ${OBJS} ${HEADER}
 	@echo "\n${NAME} created"
 
 ../Libft_obj/%.o: %.c

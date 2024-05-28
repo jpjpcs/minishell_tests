@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_line.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:19:59 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 15:35:01 by jode-jes         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:07:51 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -387,8 +387,6 @@ static void	insert_nullchar(t_shell *shell)
 						+ 1, &shell->line))
 					tmp = shell->line - 1;
 			if (ft_strchr(SPACES, *tmp) && !quote)
-				// Se o caractere for um espaço e não estiver dentro de aspas,
-				então incluímos o caracter nulo.
 				*tmp = '\0';
 		}
 	}
@@ -451,9 +449,7 @@ int	process_line(t_shell *shell)
 		// Free the memory allocated for the original line
 	if (shell->line[0] == '\0')                   
 		// If the line is empty after trimming
-		return (0);                               
-			// ??????????? Return 0. PORQUE TEMOS DE RETORNAR ZERO AQUI,
-			SE A STRTRIM JÁ RETORNA UMA CÓPIA VAZIA DA S1 NESSE CASO?
+		return (0);
 	add_history(shell->line);                     
 		// É uma função da biblioteca readline que adiciona a linha ao histórico de comandos. Adds the line to the command history.
 	if (check_syntax_errors(shell))               

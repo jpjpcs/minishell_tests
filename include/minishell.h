@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:14:45 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/26 09:32:41 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/28 10:40:13 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,8 @@
 # define EXEC 300
 # define REDIR 301
 # define PIPE 302
-//# define AND 303
-# define HERE_DOC 304
-/*# define OR_OP 305*/
-# define APPEND 306
-//# define BLOCK 307
+# define HERE_DOC 303
+# define APPEND 304
 
 # define MAXARGS 50
 
@@ -54,7 +51,7 @@
 # define NOT_EXP "|></ \t\n\v\f\r"
 # define OPANDSP "|>< \t\n\v\f\r"
 
-# define ERROR_TITLE "-minishell: "
+# define ERROR_TITLE "minishell: "
 # define ERROR_QUOTE "unclosed quotes"
 # define ERROR_SINTAX "syntax error"
 # define ERROR_HERE_DOC "unexpected EOF while looking for matching `"
@@ -76,7 +73,7 @@ typedef struct s_env
     char            *key;
     char            *value;
     int                     visible;
-    //int                     index;
+    int                     index;
     struct s_env    *next;
 }                           t_env;
 
@@ -122,13 +119,6 @@ typedef struct s_here
 	int		fdout;
 }			t_here;
 
-/*typedef struct s_lrn
-{
-	int		type;
-	t_cmd	*left;
-	t_cmd	*right;
-}			t_lrn; */
-
 typedef struct s_pipe
 {
 	int		type;
@@ -136,42 +126,74 @@ typedef struct s_pipe
 	t_cmd	*right;
 }			t_pipe;
 
-/* typedef struct s_block
-{
-	int		type;
-	t_cmd	*cmd;
-}			t_block; */
 
-
-
-void run_cmd(t_shell *shell, t_cmd *cmd);
-int run_builtin(t_shell* shell, t_exec *cmd );
-void ms_echo(t_exec *cmd);
-
-
-void    envp_to_list(char **envp, t_shell *shell);
-t_env   *env_add(t_shell *shell, char *key, char *value, int visible);
-void    envp_sort(t_shell *shell);
-void    envp_update(t_shell *shell);
-//void    envp_destroy(t_env *env);
-
+//process_line file
 int     process_line(t_shell *shell);
-void	free_exit(t_shell *shell);
+int     inside_quotes(char *line, char *current_position);
 
-
+//envp1 file - create
 void	convert_envp(char **envp, t_shell *shell);
-void	ft_envlstclear(t_env *lst, void (*del)(void*));
 void 	convert_envp_to_char(t_shell *shell);
-t_env 	*add_node_to_envp_list(t_shell *shell, char *key, char *value, int visible);
-t_env	*envp_to_sort_list(t_shell *shell);
-char	*env_get_value(char *key, t_shell *shell);
 
-void 	ft_envlstdelone(t_env *lst, void (*del)(void*));
-int		expand(char *key, int i, int j, char **line);
-int		print_error_syntax(char *msg, int exit);
-int		print_error(char *msg, char *msg2, int exit);
+//envp2 file - add/rm
+t_env 	*add_node_to_envp_list(t_shell *shell, char *key, char *value, int visible);
+bool env_rm(char *key, t_shell *shell);
+void ft_envlstdelone(t_env *lst, void (*del)(void*));
+
+//envp3 file - clear/modify
 bool	env_mod(t_shell *shell, char *target, char *new_value);
+void	ft_envlstclear(t_env *lst, void (*del)(void*));
+
+//envp4 file - sort/export/get/print
+t_env	*envp_to_sort_list(t_shell *shell);
 void	env_export(t_shell *shell, char *key, char *value, int visible);
+char	*env_get_value(char *key, t_shell *shell);
 void	envp_print(t_shell *shell);
+
+//Parser
+t_cmd	*exec_cmd(void);
+t_cmd	*pipe_cmd(t_cmd *left, t_cmd *right);
+t_cmd	*redir_cmd(t_cmd *cmd, char *file, int mode, int fd);
+int	parse_cmd(t_shell *shell);
+int	peek(t_shell *shell, char *op);
+int	gettoken(t_shell *sh, char **token);
+t_cmd	*parsepipe(t_shell *shell);
+
+// Expand
+void	expand_arg(t_shell *shell, char **arg);
+int	    expand_free(char *key, int i, int j, char **line);
+int	    expand_line(char *space, int i, int j, char **line);
+void	trim_quotes(char *arg, int *len);
+void    trim_arg(t_shell *shell, char *arg);
+
+// error_frees
+int	    print_error_syntax(t_shell *shell, char *msg, int exit);
+int	    print_error(t_shell *shell, char *msg, char *msg2, int exit);
+void	free_exit(t_shell *shell);
+int	    error_inside(t_shell *shell, char *cmd, char *arg, int error_code);
+void	free_cmd(t_cmd *cmd);
+
+// run_cmd
+void	run_cmd(t_shell *shell, t_cmd *cmd);
+void	run_exec(t_shell *shell, t_exec *cmd);
+void	run_redir(t_shell *shell, t_redir *cmd);
+void	run_pipe(t_shell *shell, t_pipe *cmd);
+void	check(int result, char *msg, int exit);
+int	check_fork(void);
+t_cmd	*here_cmd(t_cmd *cmd, char *eof);
+void	run_heredoc(t_shell *shell, t_here *here);
+
+// built-in
+int     run_builtin(t_shell* shell, t_exec *cmd );
+void    ms_echo(t_exec *cmd);
+void	ms_cd(t_shell *shell, t_exec *cmd);
+bool	ms_chdir(t_shell *shell, char *path);
+void	ms_pwd(t_shell *shell, t_exec *cmd);
+void	ms_export(t_shell *shell, t_exec *cmd);
+void	ms_unset(t_shell *shell, t_exec *cmd);
+void	ms_env(t_shell *shell, t_exec *cmd);
+void	ms_exit(t_shell *shell, t_exec *cmd);
+
+void	wait_children(t_shell *shell);
 
 #endif

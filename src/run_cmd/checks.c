@@ -1,25 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   run_cmd.c                                          :+:      :+:    :+:   */
+/*   checks.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/26 17:13:21 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/26 17:13:32 by crocha-s         ###   ########.fr       */
+/*   Created: 2023/09/07 13:38:44 by achien-k          #+#    #+#             */
+/*   Updated: 2024/05/19 16:24:16 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	run_cmd(t_shell *shell, t_cmd *cmd)
+int	check_fork(void)
 {
-	if (cmd->type == EXEC && shell->exec_cmd == true)
-		run_exec(shell, (t_exec *)cmd);
-	else if (cmd->type == REDIR && shell->exec_cmd == true)
-		run_redir(shell, (t_redir *)cmd);
-	else if (cmd->type == HERE_DOC)
-		run_heredoc(shell, (t_here *)cmd);
-	else if (cmd->type == PIPE)
-		run_pipe(shell, (t_pipe *)cmd);
+	int	pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		ft_putstr_fd(ERROR_TITLE, STDERR_FILENO);
+		perror("fork");
+		g_exit = 127;
+	}
+	return (pid);
+}
+
+void	check(int result, char *msg, int exit)
+{
+	if (result == -1)
+	{
+		ft_putstr_fd(ERROR_TITLE, STDERR_FILENO);
+		perror(msg);
+		g_exit = exit;
+	}
 }

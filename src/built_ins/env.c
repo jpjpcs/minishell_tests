@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   run_cmd.c                                          :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/26 17:13:21 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/26 17:13:32 by crocha-s         ###   ########.fr       */
+/*   Created: 2023/08/29 09:56:55 by luide-so          #+#    #+#             */
+/*   Updated: 2024/05/27 15:57:28 by crocha-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	run_cmd(t_shell *shell, t_cmd *cmd)
+void	ms_env(t_shell *shell, t_exec *cmd)
 {
-	if (cmd->type == EXEC && shell->exec_cmd == true)
-		run_exec(shell, (t_exec *)cmd);
-	else if (cmd->type == REDIR && shell->exec_cmd == true)
-		run_redir(shell, (t_redir *)cmd);
-	else if (cmd->type == HERE_DOC)
-		run_heredoc(shell, (t_here *)cmd);
-	else if (cmd->type == PIPE)
-		run_pipe(shell, (t_pipe *)cmd);
+	if (cmd->argv[1])
+		print_error(shell, "env", "too many arguments", 2);
+	else
+	{
+		if (env_get_value("PATH", shell))
+			envp_print(shell);
+		else
+			print_error(shell, cmd->argv[0], "No such file or directory", 127);
+	}
+	if (shell->status == CONTINUE)
+		g_exit = 0;
 }

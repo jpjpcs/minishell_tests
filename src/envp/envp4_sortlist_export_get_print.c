@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   envp4_sortlist_export_get_print.c                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 14:28:33 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 13:07:23 by jode-jes         ###   ########.fr       */
+/*   Updated: 2024/05/27 18:04:05 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,8 @@ bool	env_rm(char *key, t_shell *shell)
 // This function prints the environment variables in the shell structure.
 void	envp_print(t_shell *shell)
 {
+	t_env *tmp;
+	
 	tmp = shell->env_list;
 		// Set a temporary pointer to the beginning of the shell's environment linked list.
 	while (tmp)           

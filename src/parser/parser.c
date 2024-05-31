@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 19:43:25 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 18:11:35 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/31 10:46:22 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	peek(t_shell *shell, char *op)
 	while (shell->ps < shell->es && !*shell->ps)
 		// Enquanto ps for menor que es e encontrar um caractere em op e não for nulo.
 		shell->ps++;
-	return (shell->ps && ft_strchr(op, *shell->ps));
+	return (shell->ps < shell->es && ft_strchr(op, *shell->ps));
 		// Retorna 1 se encontrar um caractere em op, 0 caso contrário
 }
 int	parse_cmd(t_shell *shell)

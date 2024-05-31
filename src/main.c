@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:07:27 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/31 09:10:52 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/31 10:50:44 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	main(int argc, char **argv, char **envp)
 		;
 	clear_history();
 	ft_envlstclear(shell.env_list_unsorted, free);
-	ft_envlstclear(shell.env_list_sorted, free);
+	//ft_envlstclear(shell.env_list_sorted, free);
 	if (shell.envp_char)
 		// If the shell's environment copy exists...
 		ft_free_array(shell.envp_char); // Free the memory allocated for it.

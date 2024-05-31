@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 09:57:30 by luide-so          #+#    #+#             */
-/*   Updated: 2024/05/30 22:01:07 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/31 09:17:05 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,17 @@ static void	print_envp_sorted(t_shell *shell, int export)
 	{
 		while (tmp)
 		{
-			if (tmp->index == i)
+			if (export)
 			{
-				if (export && tmp->visible)
+				if (tmp->visible)
 					ft_printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
-				else if (export && !tmp->visible)
+				else if (!tmp->visible)
 					ft_printf("declare -x %s\n", tmp->key);
-				else if (!export && tmp->visible)
+			}
+			else
+			{
+				if (tmp->visible)
 					ft_printf("%s=\"%s\"\n", tmp->key, tmp->value);
-				break ;
 			}
 			tmp = tmp->next;
 		}

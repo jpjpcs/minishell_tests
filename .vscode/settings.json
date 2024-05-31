@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "minishell.h": "c",
+        "numbers": "c",
+        "algorithm": "c",
+        "random": "c",
+        "__node_handle": "c",
+        "queue": "c"
+    }
+}

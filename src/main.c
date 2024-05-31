@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:07:27 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/30 21:59:56 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/31 09:10:52 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ static int	to_run(t_shell *shell)
 
 static int	init_shell_variables(t_shell *shell, char **envp)
 {
+	g_exit = 0;
 	*shell = (t_shell){0};
 	convert_envp_to_linked_lists(envp, shell);
 	convert_envp_to_char(shell);
@@ -96,7 +97,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
 
-	g_exit = 0;
 	(void)argv;
 	if (!init_shell_variables(&shell, envp))
 		return (0);

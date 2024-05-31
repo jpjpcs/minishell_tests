@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:14:45 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/30 21:59:30 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/31 08:57:20 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,5 +195,6 @@ void	ms_env(t_shell *shell, t_exec *cmd);
 void	ms_exit(t_shell *shell, t_exec *cmd);
 
 void	wait_children(t_shell *shell);
+void	signal_handler(int sig);
 
 #endif

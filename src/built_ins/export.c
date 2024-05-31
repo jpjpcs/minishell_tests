@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 09:57:30 by luide-so          #+#    #+#             */
-/*   Updated: 2024/05/26 18:30:00 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/30 22:01:07 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	print_envp_sorted(t_shell *shell, int export)
 	int		i;
 
 	i = 0;
-	tmp = shell->env_list;
+	tmp = shell->env_list_sorted;
 	while (i++ < shell->envp_size)
 	{
 		while (tmp)
@@ -35,7 +35,7 @@ static void	print_envp_sorted(t_shell *shell, int export)
 			}
 			tmp = tmp->next;
 		}
-		tmp = shell->env_list;
+		tmp = shell->env_list_sorted;
 	}
 }
 

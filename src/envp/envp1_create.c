@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:26:00 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 18:26:40 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/30 22:07:11 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@
 Nesta pasta iremos copiar as variáveis de ambiente (env) do sistema (da shell) 
 // para o nosso programa (minishell).
 Iremos criar 3 variáveis distintas consoante a utilidade que lhe queremos dar:
-Resumindo, shell->env_list (a lista ligada por ordem de criação),
+Resumindo, shell->env_list_unsorted (a lista ligada por ordem de criação),
 	a shell->env_sorted (a lista ligada por ordem alfabética) e a 
 	shell->envp_char (a char **envp).
 1
-	- A shell->env_list serve para imprimir as variáveis quando 
+	- A shell->env_list_unsorted serve para imprimir as variáveis quando 
 	executamos o comando env (ou seja,
 	exibi-las por ordem de criação). É criada na função 
 	convert_envp_to_linked_lists 
@@ -81,6 +81,19 @@ A convert_envp_to_char é chamada no env_export e no init_shell_variables.
 A envp_sort_list é chamada no env_export e no convert_envp_to_linked_lists.
 */
 
+t_env *copy_list(t_env *env_list_unsorted) 
+{
+    if (!env_list_unsorted)
+        return NULL;
+
+    t_env *new_list = malloc(sizeof(t_env));
+	new_list->key = env_list_unsorted->key;
+	new_list->value = env_list_unsorted->value;
+	new_list->visible = env_list_unsorted->visible;
+	new_list->next = copy_list(env_list_unsorted->next);
+	return new_list;
+}
+
 // Função para alocar memória para o char **envp_char.
 void	**alocate_memory_to_envp_char(t_shell *shell)
 {
@@ -88,7 +101,7 @@ void	**alocate_memory_to_envp_char(t_shell *shell)
 	int		i;
 
 	i = 0;
-	tmp = shell->env_list;
+	tmp = shell->env_list_unsorted;
 	while (tmp)
 	{
 		if (tmp->visible)
@@ -113,7 +126,7 @@ void	convert_envp_to_char(t_shell *shell)
 	size_t	buffer_size;
 
 	alocate_memory_to_envp_char(shell);
-	tmp = shell->env_list;
+	tmp = shell->env_list_unsorted;
 	i = 0;
 	while (tmp)
 	{
@@ -142,12 +155,12 @@ static char	*ft_strtok(char *str, const char *delim)
 	char		*ps;
 	char		*s;
 
-	token = buffer;
-	ps = buffer;
 	if (str != NULL)
 		buffer = str;
 	if (buffer == NULL)
 		return (NULL);
+	token = buffer;
+	ps = buffer;
 	while (*ps && (s = ft_strchr(delim, *ps)) == NULL)
 		ps++;
 	if (*ps)
@@ -161,7 +174,7 @@ static char	*ft_strtok(char *str, const char *delim)
 }
 
 // Função para converter o envp em uma lista ligada de variáveis de ambiente.
-// shell-env_list Cria a linked list por ordem de criação 
+// shell->env_list_unsorted Cria a linked list por ordem de criação 
 // através da função add_node_to_env_list.
 void	convert_envp_to_linked_lists(char **envp, t_shell *shell)
 {
@@ -181,21 +194,9 @@ void	convert_envp_to_linked_lists(char **envp, t_shell *shell)
 		value = NULL;
 		if (key && ft_strchr(envp[i], '='))
 			value = ft_strtok(NULL, "=");
-		shell->env_list = add_node_to_envp_list(shell, key, value, 1);
+		shell->env_list_unsorted = add_node_to_envp_list(shell, key, value, 1);
 		i++;
 	}
-	shell->env_list_sorted = envp_to_sort_list(shell);
-}
-
-// convert_envp_to_linked_lists(envp, shell) 
-//para usar nos comando env (ordem criação) e 
-//export (ordem alfabética).
-//convert_envp_to_char(shell) para criar o char **envp_to_char 
-// q é o que será passado para o execve,para que o processo 
-// filho tenha acesso às variáveis de ambiente.
-
-void	convert_envp(char **envp, t_shell *shell)
-{
-	convert_envp_to_linked_lists(envp, shell);
-	convert_envp_to_char(shell);
+	shell->env_list_sorted = copy_list(shell->env_list_unsorted); // Crie uma cópia da lista original
+	shell->env_list_sorted = env_sorted_list(shell);
 }

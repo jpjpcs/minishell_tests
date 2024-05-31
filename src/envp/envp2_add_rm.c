@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 02:29:21 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 17:45:30 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/30 22:08:11 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ bool	env_rm(char *key, t_shell *shell)
 	t_env	*tmp;
 	t_env	*tmp_last;
 
-	tmp = shell->env_list;
+	tmp = shell->env_list_unsorted;
 	tmp_last = NULL;
 	while (tmp)
 	{
@@ -39,11 +39,11 @@ bool	env_rm(char *key, t_shell *shell)
 		{
 			if (tmp_last)
 				tmp_last->next = tmp->next;
-			if (tmp == shell->env_list)
-				shell->env_list = tmp->next;
+			if (tmp == shell->env_list_unsorted)
+				shell->env_list_unsorted = tmp->next;
 			ft_envlstdelone(tmp, free);
 			shell->envp_size--;
-			envp_to_sort_list(shell);
+			env_sorted_list(shell);
 			convert_envp_to_char(shell);
 			return (true);
 		}
@@ -98,11 +98,10 @@ t_env	*add_node_to_envp_list(t_shell *shell, char *key, char *value,
 	new_node = env_lstnew(key, value, visible);
 	if (!new_node)
 		return (NULL);
-	if (env_lstadd_back(&shell->env_list, new_node))
+	if (env_lstadd_back(&shell->env_list_unsorted, new_node))
 		shell->envp_size++;
-	free(new_node);
-	envp_to_sort_list(shell);   
-		
-	convert_envp_to_char(shell); 
-	return (shell->env_list);
+	env_sorted_list(shell);
+	convert_envp_to_char(shell);
+	//free(new_node);
+	return (shell->env_list_unsorted);
 }

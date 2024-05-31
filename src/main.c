@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:07:27 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/26 20:29:07 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/30 21:59:56 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,15 +77,18 @@ static int	to_run(t_shell *shell)
 	free(shell->line);
 	return (shell->status);
 }
-void	welcome_screen(void)
-{
-	printf("\nMinishell 1.0\n");
-}
+// convert_envp_to_linked_lists(envp, shell) 
+//para usar nos comando env (ordem criação) e 
+//export (ordem alfabética).
+//convert_envp_to_char(shell) para criar o char **envp_to_char 
+// q é o que será passado para o execve,para que o processo 
+// filho tenha acesso às variáveis de ambiente.
 
 static int	init_shell_variables(t_shell *shell, char **envp)
 {
 	*shell = (t_shell){0};
-	convert_envp(envp, shell);
+	convert_envp_to_linked_lists(envp, shell);
+	convert_envp_to_char(shell);
 	return (1);
 }
 
@@ -93,7 +96,7 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
 
-	// g_exit = 0;
+	g_exit = 0;
 	(void)argv;
 	if (!init_shell_variables(&shell, envp))
 		return (0);
@@ -103,11 +106,12 @@ int	main(int argc, char **argv, char **envp)
 		return (0);
 	}
 	else
-		welcome_screen();
+		printf("\nMinishell 1.0\n");
 	while (to_run(&shell))
 		;
 	clear_history();
-	ft_envlstclear(shell.env_list, free);
+	ft_envlstclear(shell.env_list_unsorted, free);
+	ft_envlstclear(shell.env_list_sorted, free);
 	if (shell.envp_char)
 		// If the shell's environment copy exists...
 		ft_free_array(shell.envp_char); // Free the memory allocated for it.

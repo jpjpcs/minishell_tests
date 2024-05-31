@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:37:39 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 18:12:33 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/31 00:48:55 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	free_exit(t_shell *shell)
 	if (shell->line)
 		free(shell->line);
 	free_cmd(shell->cmd);
-	ft_envlstclear(shell->env_list, free);
+	ft_envlstclear(shell->env_list_unsorted, free);
+	ft_envlstclear(shell->env_list_sorted, free);
 	if (shell->envp_char)
 		ft_free_array(shell->envp_char);
 	exit(g_exit);

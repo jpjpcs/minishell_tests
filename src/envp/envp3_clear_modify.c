@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envp3.c                                            :+:      :+:    :+:   */
+/*   envp3_clear_modify.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 18:07:07 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/16 02:31:12 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/30 22:08:29 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool	env_mod(t_shell *shell, char *target, char *new_value)
 {
 	t_env	*tmp;
 
-	tmp = shell->env_list;
+	tmp = shell->env_list_unsorted;
 		// Set a temporary pointer to the beginning of the shell's environment linked list.
 	while (tmp)           
 		// Iterate through each environment variable in the linked list.

@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 14:28:33 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 18:04:05 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/30 22:08:51 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void	envp_print(t_shell *shell)
 {
 	t_env *tmp;
 	
-	tmp = shell->env_list;
+	tmp = shell->env_list_unsorted;
 		// Set a temporary pointer to the beginning of the shell's environment linked list.
 	while (tmp)           
 		// Iterate through each environment variable in the linked list.
@@ -141,7 +141,7 @@ char	*env_get_value(char *key, t_shell *shell)
 {
 	t_env	*tmp;
 
-	tmp = shell->env_list;
+	tmp = shell->env_list_unsorted;
 		// Set a temporary pointer to the beginning of the shell's environment linked list.
 	while (tmp)           
 		// Iterate through each environment variable in the linked list.
@@ -169,24 +169,42 @@ void	env_export(t_shell *shell, char *key, char *value, int visible)
 }
 
 // Função para ordenar a lista ligada de variáveis de ambiente por ordem alfabética.
-t_env	*envp_to_sort_list(t_shell *shell)
-{
-	t_env	*lst_head_pointer;
-	char	*tmp_key;
 
-	lst_head_pointer = shell->env_list;
-	tmp_key = NULL;
-	while (lst_head_pointer)
+t_env	*env_sorted_list(t_shell *shell)
+{
+	t_env	*tmp_lst = NULL;
+	t_env	*dummy = NULL;
+	
+	if (!shell->env_list_sorted)
+		return (NULL);
+	tmp_lst = shell->env_list_sorted;
+	dummy = shell->env_list_sorted;
+	
+	while (shell->env_list_sorted && shell->env_list_sorted->next)
 	{
-		if (ft_strcmp(lst_head_pointer->key, lst_head_pointer->next->key) > 0)
+		if (ft_strcmp(shell->env_list_sorted->key, shell->env_list_sorted->next->key) > 0)
 		{
-			tmp_key = lst_head_pointer->key;
-			lst_head_pointer->key = lst_head_pointer->next->key;
-			lst_head_pointer->next->key = tmp_key;
-			lst_head_pointer = shell->env_list;
+			if (shell->env_list_sorted == tmp_lst)
+			{
+				tmp_lst = shell->env_list_sorted->next;
+				shell->env_list_sorted->next = tmp_lst->next;
+				tmp_lst->next = shell->env_list_sorted;
+				dummy = tmp_lst;
+			}
+			else
+			{
+				shell->env_list_sorted = shell->env_list_sorted->next;
+				dummy->next->next = shell->env_list_sorted->next;
+				shell->env_list_sorted->next = dummy->next;
+				dummy->next = shell->env_list_sorted;
+				shell->env_list_sorted = tmp_lst;
+			}  
 		}
 		else
-			lst_head_pointer = lst_head_pointer->next;
+		{
+			dummy = shell->env_list_sorted;
+			shell->env_list_sorted = shell->env_list_sorted->next;
+		}
 	}
-	return (lst_head_pointer);
+	return (tmp_lst);
 }

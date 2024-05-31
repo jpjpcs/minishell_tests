@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: crocha-s <crocha-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 09:58:46 by luide-so          #+#    #+#             */
-/*   Updated: 2024/05/26 18:32:06 by crocha-s         ###   ########.fr       */
+/*   Updated: 2024/05/30 22:03:41 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*get_key(char *key, t_shell *shell)
 {
 	t_env	*tmp;
 
-	tmp = shell->env_list;
+	tmp = shell->env_list_unsorted;
 	while (tmp)
 	{
 		if (!ft_strcmp(tmp->key, key))

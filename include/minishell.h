@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:14:45 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/28 10:40:13 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/30 21:59:30 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ typedef struct s_shell
     char    *ps;
     char    *es;
     int         line_len;
-    t_env   *env_list;
+    t_env   *env_list_unsorted;
 	t_env   *env_list_sorted;
     t_cmd   *cmd;
     int     status;
@@ -132,7 +132,7 @@ int     process_line(t_shell *shell);
 int     inside_quotes(char *line, char *current_position);
 
 //envp1 file - create
-void	convert_envp(char **envp, t_shell *shell);
+void	convert_envp_to_linked_lists(char **envp, t_shell *shell);
 void 	convert_envp_to_char(t_shell *shell);
 
 //envp2 file - add/rm
@@ -145,7 +145,7 @@ bool	env_mod(t_shell *shell, char *target, char *new_value);
 void	ft_envlstclear(t_env *lst, void (*del)(void*));
 
 //envp4 file - sort/export/get/print
-t_env	*envp_to_sort_list(t_shell *shell);
+t_env	*env_sorted_list(t_shell *shell);
 void	env_export(t_shell *shell, char *key, char *value, int visible);
 char	*env_get_value(char *key, t_shell *shell);
 void	envp_print(t_shell *shell);

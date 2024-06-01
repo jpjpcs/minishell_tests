@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 09:57:30 by luide-so          #+#    #+#             */
-/*   Updated: 2024/05/31 09:17:05 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/31 15:31:23 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,26 @@
 static void	print_envp_sorted(t_shell *shell, int export)
 {
 	t_env	*tmp;
-	int		i;
 
-	i = 0;
 	tmp = shell->env_list_sorted;
-	while (i++ < shell->envp_size)
+	
+	while (tmp)
 	{
-		while (tmp)
+		if (export)
 		{
-			if (export)
-			{
-				if (tmp->visible)
-					ft_printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
-				else if (!tmp->visible)
-					ft_printf("declare -x %s\n", tmp->key);
-			}
-			else
-			{
-				if (tmp->visible)
-					ft_printf("%s=\"%s\"\n", tmp->key, tmp->value);
-			}
-			tmp = tmp->next;
+			if (tmp->visible)
+				ft_printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);
+			else if (!tmp->visible)
+				ft_printf("declare -x %s\n", tmp->key);
 		}
-		tmp = shell->env_list_sorted;
+		else
+		{
+			if (tmp->visible)
+				ft_printf("%s=\"%s\"\n", tmp->key, tmp->value);
+		}
+		tmp = tmp->next;
 	}
+		tmp = shell->env_list_sorted;
 }
 
 static bool	valid_var(t_shell *shell, char *arg)

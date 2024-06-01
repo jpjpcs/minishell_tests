@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 16:37:39 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/31 00:48:55 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/31 11:48:12 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	free_exit(t_shell *shell)
 		free(shell->line);
 	free_cmd(shell->cmd);
 	ft_envlstclear(shell->env_list_unsorted, free);
-	ft_envlstclear(shell->env_list_sorted, free);
+	//ft_envlstclear(shell->env_list_sorted, free);
 	if (shell->envp_char)
 		ft_free_array(shell->envp_char);
 	exit(g_exit);
@@ -40,7 +40,7 @@ int	print_error_syntax(t_shell *shell, char *msg, int exit)
 			// Imprime o primeiro caractere da mensagem no stderr.
 	ft_putendl_fd("'", STDERR_FILENO);     
 		// Imprime um apóstrofo e uma nova linha no stderr.
-	shell->status = RESTORE;               
+	shell->status = RESTORE;              
 		// Define o status da shell como RESTORE.
 	g_exit = exit;                          // Define o código de saída global.
 	return (1);                            

@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:19:59 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 18:07:51 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/31 11:30:03 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -440,7 +440,7 @@ int	process_line(t_shell *shell)
 {
 	char *tmp;
 
-	// shell->status = CONTINUE; // Set the shell status to CONTINUE
+	shell->status = CONTINUE; // Set the shell status to CONTINUE
 	tmp = shell->line;                            
 		// ????????????? Store the pointer to the original line ENTÃO CRIAS UM FICHEIRO temp E LIBERTA-LO A SEGUIR SEM NUNCA O TERES USADO PARA NADA!!!?
 	shell->line = ft_strtrim(shell->line, SPACES);

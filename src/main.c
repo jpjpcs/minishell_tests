@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 17:07:27 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/31 10:50:44 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/05/31 16:17:53 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,23 @@ static int	init_shell_variables(t_shell *shell, char **envp)
 	convert_envp_to_char(shell);
 	return (1);
 }
+void print_env_list (t_env *env_list)
+{
+	while (env_list)
+	{
+		printf("%s=%s\n", env_list->key, env_list->value);
+		env_list = env_list->next;
+	}
+}
+void ft_print_array (char **array)
+{
+	int i = 0;
+	while (array[i])
+	{
+		printf("%s\n", array[i]);
+		i++;
+	}
+}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -107,6 +124,13 @@ int	main(int argc, char **argv, char **envp)
 	}
 	else
 		printf("\nMinishell 1.0\n");
+	/* printf("print unsorted list\n");
+	print_env_list(shell.env_list_unsorted); */
+	/* printf("print sorted list\n");
+	print_env_list(shell.env_list_sorted); */
+	/* printf("print envp_char\n");
+	ft_print_array(shell.envp_char); */
+	
 	while (to_run(&shell))
 		;
 	clear_history();

@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 02:29:21 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/31 12:15:21 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/06/04 03:59:47 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ bool	env_rm(char *key, t_shell *shell)
 				shell->env_list_unsorted = tmp->next;
 			ft_envlstdelone(tmp, free);
 			shell->envp_size--;
-			env_sorted_list(shell);
+			//env_sorted_list(shell);
+			shell->env_list_sorted = copy_list(shell->env_list_unsorted); // Crie uma cópia da lista original
+			shell->env_list_sorted = env_sorted_list(shell);
 			convert_envp_to_char(shell);
 			return (true);
 		}
@@ -100,6 +102,8 @@ t_env	*add_node_to_envp_list(t_shell *shell, char *key, char *value,
 		return (NULL);
 	if (env_lstadd_back(&shell->env_list_unsorted, new_node))
 		shell->envp_size++;
+	shell->env_list_sorted = copy_list(shell->env_list_unsorted); // Crie uma cópia da lista original
+	shell->env_list_sorted = env_sorted_list(shell);
 	//env_sorted_list(shell);
 	convert_envp_to_char(shell);
 	//free(new_node);

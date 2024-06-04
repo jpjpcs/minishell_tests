@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 11:26:00 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/06/01 01:43:22 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/06/04 03:39:40 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,17 +185,8 @@ void	convert_envp_to_linked_lists(char **envp, t_shell *shell)
 	i = 0;
 	while (envp[i])
 	{	
-		printf ("\n");
-		printf("Before strtok: %s\n", envp[i]);
-		printf ("\n");
 		key = ft_strtok(envp[i], "=");
 		value = ft_strtok(NULL, "=");
-		printf("Key after strtok: %s\n", key);
-		printf("Value after strtok: %s\n", value);
-		printf ("\n");
-		printf("After strtok: %s\n", envp[i]);
-		printf ("\n");
-		printf ("\n");
 		shell->env_list_unsorted = add_node_to_envp_list(shell, key, value, 1);
 		i++;
 	}

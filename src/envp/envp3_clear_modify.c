@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 18:07:07 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/30 22:08:29 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/06/04 04:02:23 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,31 +32,17 @@ bool	env_mod(t_shell *shell, char *target, char *new_value)
 
 	tmp = shell->env_list_unsorted;
 		// Set a temporary pointer to the beginning of the shell's environment linked list.
-	while (tmp)           
-		// Iterate through each environment variable in the linked list.
+	while (tmp)
 	{
 		if (ft_strcmp(target, tmp->key) == 0)
-			// If the key of the current variable matches the target key...
 		{
-			free(tmp->value);                             
-				// Free the memory allocated for the current value.
-			tmp->value = malloc(ft_strlen(new_value) + 1);
-				// Allocate memory for the new value.
-			if (tmp->value)                               
-				// If the memory allocation was successful...
-			{
-				ft_strlcpy(tmp->value, new_value, ft_strlen(new_value) + 1);
-					// Copy the new value to the allocated memory.
-				tmp->visible = 1;                                           
-					// Set the variable as visible.
-				convert_envp_to_char(shell);                                
-					// Update the shell's environment copy.
-				return (true);                                              
-					// Return true to indicate successful modification.
-			}
+			free(tmp->value);
+			tmp->value = ft_strdup(new_value);
+			tmp->visible = 1;
+			shell->env_list_sorted = copy_list(shell->env_list_unsorted);
+			return (true);
 		}
 		tmp = tmp->next;
-			// Move to the next environment variable in the linked list.
 	}
-	return (false); // Return false if the target key is not found.
+	return (false);
 }

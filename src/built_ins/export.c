@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 09:57:30 by luide-so          #+#    #+#             */
-/*   Updated: 2024/05/31 15:31:23 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/06/04 03:38:56 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	print_envp_sorted(t_shell *shell, int export)
 		}
 		tmp = tmp->next;
 	}
-		tmp = shell->env_list_sorted;
+	tmp = shell->env_list_sorted;
 }
 
 static bool	valid_var(t_shell *shell, char *arg)
@@ -79,7 +79,7 @@ static void	run_export(t_shell *shell, t_exec *cmd)
 
 	if (!valid_args(cmd->argv))
 		print_envp_sorted(shell, 1);
-	else
+	else 
 	{
 		i = 0;
 		while (cmd->argv[++i])

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   run_redir.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 16:42:00 by luide-so          #+#    #+#             */
-/*   Updated: 2024/05/27 15:28:27 by jode-jes         ###   ########.fr       */
+/*   Updated: 2024/06/04 03:04:53 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	expand_file(t_shell *shell, char **file)
 
 	expand_arg(shell, file); // expands the envp on the string *file
 	len = ft_strlen(*file); // determines the length of file after the expansion
-	trim_arg(shell, *file); //trims the blank spaces on each edge of the string
+	trim_arg(*file); //trims the blank spaces on each edge of the string
 	trim_quotes(*file, &len); //trims quotes and readjust the lenght
 	return (1); //returns 1 if it is sucessful
 }

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   trim.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 11:30:07 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 13:57:29 by jode-jes         ###   ########.fr       */
+/*   Updated: 2024/06/04 03:00:42 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*
+
 // Código do Balsa
 
 #include "../../include/minishell.h"
@@ -60,8 +60,8 @@ void	trim_quotes(char *arg, int *len)
 	}
 }
 
-*/
-#include "../../include/minishell.h"
+
+/* #include "../../include/minishell.h"
 
 void	trim_arg(t_shell *shell, char *arg)
 {
@@ -97,4 +97,4 @@ void	trim_quotes(char *arg, int *len)
 		else
 			i++;
 	}
-}
+} */

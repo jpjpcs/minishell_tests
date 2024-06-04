@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_arg.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jode-jes <jode-jes@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 10:48:05 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/27 13:57:07 by jode-jes         ###   ########.fr       */
+/*   Updated: 2024/06/04 02:58:25 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,29 @@ void	expand_arg(t_shell *shell, char **arg)
 
 #include "../../include/minishell.h"
 
+
+ int	inside_quotes(char *line, char *current_position)
+{
+	int	quote;
+
+	quote = 0;
+	while (*line)
+	{
+		if (*line == '"' || *line == '\'')
+		{
+			if (quote == 0)
+				quote = *line;
+					// Se a quote não existir é definida aqui como existente
+			else if (quote == *line)
+				quote = 0; // Se a quote existir é definida aqui
+		}
+		if (&line == &current_position)
+			break ;
+		line++;
+	}
+	return (quote);
+		// Retorna o status de citação atual se nenhuma das condições acima for verdadeira
+}
 static int	point_to_exp_tilde(t_shell *sh, int point, char *tmp, char **line)
 {
 	if (!tmp[1] || ft_strchr(NOT_EXP, tmp[1]))
@@ -124,7 +147,7 @@ static int	point_to_exp_tilde(t_shell *sh, int point, char *tmp, char **line)
 	return (0);
 }
 
-static int	expand_tilde(t_shell *shell, char **line)
+/* static int	expand_tilde(t_shell *shell, char **line)
 {
 	char	*tmp;
 
@@ -133,6 +156,30 @@ static int	expand_tilde(t_shell *shell, char **line)
 	{
 		if (*tmp == '~' && !inside_quotes(shell->line, tmp) && (tmp == *line
 				|| ft_strchr(SPACES, *(tmp - 1))))
+			if (point_to_exp_tilde(shell, tmp - *line, tmp, line))
+				tmp = *line;
+		if (*tmp)
+			tmp++;
+	}
+	return (0);
+} */
+static int	expand_tilde(t_shell *shell, char **line)
+{
+	int		dquote;
+	int		squote;
+	char	*tmp;
+
+	dquote = 0;
+	squote = 0;
+	tmp = *line;
+	while (*tmp)
+	{
+		if (*tmp == '"' && !squote)
+			dquote = !dquote;
+		if (*tmp == '\'' && !dquote)
+			squote = !squote;
+		if (*tmp == '~' && !dquote && !squote
+			&& (tmp == *line || ft_strchr(SPACES, *(tmp - 1))))
 			if (point_to_exp_tilde(shell, tmp - *line, tmp, line))
 				tmp = *line;
 		if (*tmp)
@@ -163,8 +210,11 @@ static int	point_to_expand_env(t_shell *sh, int point, char *tmp, char **line)
 	return (0);
 }
 
-static void	env_expand(t_shell *shell, char *tmp, char **line)
+/* static void	env_expand(t_shell *shell, char *tmp, char **line)
 {
+	int quote;
+
+	quote = 0;
 	while (*(++tmp))
 	{
 		if (*tmp == '$' && !ft_strchr(NOT_EXP, *(tmp + 1))
@@ -174,6 +224,34 @@ static void	env_expand(t_shell *shell, char *tmp, char **line)
 			if (point_to_expand_env(shell, tmp - *line, tmp, line))
 			{
 				tmp = *line - 1;
+				quote = 0;
+			}
+		}
+	}
+} */
+
+static void	env_expand(t_shell *shell, char *tmp, char **line)
+{
+	int		dquote;
+	int		squote;
+
+	dquote = 0;
+	squote = 0;
+	while (*(++tmp))
+	{
+		if (*tmp == '"' && !squote)
+			dquote = !dquote;
+		if (*tmp == '\'' && !dquote)
+			squote = !squote;
+		if (*tmp == '$' && !ft_strchr(NOT_EXP, *(tmp + 1)) && !squote
+			&& !((dquote || squote) && (*(tmp + 1) == '"'
+					|| *(tmp + 1) == '\'')))
+		{
+			if (point_to_expand_env(shell, tmp - *line, tmp, line))
+			{
+				tmp = *line - 1;
+				dquote = 0;
+				squote = 0;
 			}
 		}
 	}

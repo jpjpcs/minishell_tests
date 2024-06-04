@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 15:14:45 by crocha-s          #+#    #+#             */
-/*   Updated: 2024/05/31 08:57:20 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/06/04 03:46:52 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ int     inside_quotes(char *line, char *current_position);
 //envp1 file - create
 void	convert_envp_to_linked_lists(char **envp, t_shell *shell);
 void 	convert_envp_to_char(t_shell *shell);
+t_env *copy_list(t_env *env_list_unsorted);
 
 //envp2 file - add/rm
 t_env 	*add_node_to_envp_list(t_shell *shell, char *key, char *value, int visible);
@@ -164,7 +165,7 @@ void	expand_arg(t_shell *shell, char **arg);
 int	    expand_free(char *key, int i, int j, char **line);
 int	    expand_line(char *space, int i, int j, char **line);
 void	trim_quotes(char *arg, int *len);
-void    trim_arg(t_shell *shell, char *arg);
+void	trim_arg(char *arg);
 
 // error_frees
 int	    print_error_syntax(t_shell *shell, char *msg, int exit);

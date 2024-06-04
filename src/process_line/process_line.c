@@ -6,7 +6,7 @@
 /*   By: joaosilva <joaosilva@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 11:19:59 by joaosilva         #+#    #+#             */
-/*   Updated: 2024/05/31 11:30:03 by joaosilva        ###   ########.fr       */
+/*   Updated: 2024/06/04 03:17:35 by joaosilva        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -363,37 +363,63 @@ Haverão algumas exceções como:
 
 #include "../../include/minishell.h"
 
-static void	insert_nullchar(t_shell *shell)
+static void	insert_space(t_shell *shell)
+{
+	char	*tmp;
+	int		quote;
+
+	quote = 0;
+	tmp = shell->line; 
+	
+	while (*tmp)
+	{
+		if (*tmp == '"' || *tmp == '\'')
+		{
+			if (quote == 0)
+				quote = *tmp;
+			else if (quote == *tmp)
+				quote = 0;
+		}
+		if (ft_strchr(OPERATORS, *tmp) && !quote)
+		{
+			if (tmp != shell->line && !ft_strchr(" |><", *(tmp - 1)))
+			{
+				if (expand_line(" ", tmp - shell->line, tmp - shell->line,
+						&shell->line))
+					tmp = shell->line - 1;
+			}
+			else if (!ft_strchr(" |><", *(tmp + 1)))
+				if (expand_line(" ", tmp - shell->line + 1, tmp - shell->line
+						+ 1, &shell->line))
+					tmp = shell->line - 1;
+		}
+		tmp++;
+	}
+	shell->line_len = ft_strlen(shell->line);
+}
+void insert_nullchar(t_shell *shell)
 {
 	char	*tmp;
 	int		quote;
 
 	quote = 0;
 	tmp = shell->line;
-	while (*(++tmp))
+	while (*tmp)
 	{
-		if (ft_strchr("OPERATORS", *tmp) && !inside_quotes(shell->line, tmp))
-			// Se o caractere for um operador e não estiver dentro de aspas
+		if (*tmp == '"' || *tmp == '\'')
 		{
-			if (tmp != shell->line && !ft_strchr(" |><", *(tmp - 1)))
-				// O catater não está no início da linha e o anterior não é um espaço ou um operador
-			{
-				if (expand_line(" ", tmp - shell->line, tmp - shell->line,
-						&shell->line)) // Se a expansão for bem
-					tmp = shell->line - 1;
-			}
-			else if (!ft_strchr(" |><", *(tmp + 1))) //
-				if (expand_line(" ", tmp - shell->line + 1, tmp - shell->line
-						+ 1, &shell->line))
-					tmp = shell->line - 1;
-			if (ft_strchr(SPACES, *tmp) && !quote)
-				*tmp = '\0';
+			if (quote == 0)
+				quote = *tmp;
+			else if (quote == *tmp)
+				quote = 0;
 		}
+		if (ft_strchr(SPACES, *tmp) && !quote)
+			*tmp = '\0';
+		tmp++;
 	}
-	shell->line_len = ft_strlen(shell->line);
 }
 
-// Função para alternar o status da citação e verificar se existem aspas não correspondidas
+/* // Função para alternar o status da citação e verificar se existem aspas não correspondidas
 int	inside_quotes(char *line, char *current_position)
 {
 	int	quote;
@@ -434,8 +460,28 @@ static int	check_syntax_errors(t_shell *shell)
 		// Se não houver erros de pipe e não houver citações não correspondidas
 		return (0);
 	return (1);
-}
+} */
 
+static int	check_syntax_errors(t_shell *shell, int dquote, int squote)
+{
+	char *tmp;
+
+	tmp = shell->line - 1;
+	if (*shell->line == '|')
+		return (print_error_syntax(shell, shell->line, 2));
+	if (shell->line[strlen(shell->line) - 1] == '|')
+		return (print_error(shell, "Open | not supported", NULL, 2));
+	while(*++tmp)
+	{
+		if (*tmp == '"' && !squote)
+			dquote = !dquote;
+		if (*tmp == '\'' && !dquote)
+			squote = !squote;
+	}
+	if (dquote || squote)
+		return (print_error(shell, "Unmatched quotes", NULL, 2));
+	return (0);
+}
 int	process_line(t_shell *shell)
 {
 	char *tmp;
@@ -452,9 +498,10 @@ int	process_line(t_shell *shell)
 		return (0);
 	add_history(shell->line);                     
 		// É uma função da biblioteca readline que adiciona a linha ao histórico de comandos. Adds the line to the command history.
-	if (check_syntax_errors(shell))               
+	if (check_syntax_errors(shell, 0, 0))               
 		// Verifica se há erros de syntax nos pipes e nas aspas.
 		return (0);
+	insert_space(shell);
 	insert_nullchar(shell);
 	return (1); // Return 1
 }
